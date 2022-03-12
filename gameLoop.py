@@ -9,19 +9,6 @@ def mainGameLoop():
     else:
         slotsBetOn = userInput
         
-        while slotsBetOn > 0:
-            print("Which slot would you like to bet on?")
-            slot = input()
-            slotsBetOn -= 1
-
-            print("How much would you like to bet on slot " + str(slot) + "?")
-            bet = input()
-
-            if bet < gameSystems.minBet:
-                print ("Bet too small, try again.")
-            elif bet > gameSystems.maxBet:
-                print ("bet too large, try agian.")
-            else:
-                break
+        bets = gameSystems.placeBet(slotsBetOn)
 
         
