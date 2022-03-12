@@ -22,7 +22,6 @@ def placeBet(slotsBetOn):
         elif bet > maxBet:
             print ("bet too large, try agian.")
         else:
-            # This places the FIRST bet in the LAST position in the array, with a max of three bet slots
             placedBets[slotsBetOn-1] = [slot, bet]
 
         slotsBetOn -= 1 
@@ -37,13 +36,21 @@ class gameSymbol(object):
         # wheel = 0
 
 class result(object):
-    def __init__(self, symOut, symMid, symIn):
-        self.symOut = symOut
-        self.symMid = symMid
-        self.symIn = symIn
+    def __init__(self, wheel, bets):
+        # array of all three wheel positions AFTER spin
+        self.wheel = wheel
+        # array of three sets of [slot, bet]
+        self.bets = bets
 
     def resultList(self):
-        result = [self.symOut, self.symMid, self.symIn]
+        for index, bet in enumerate(self.bets):
+            if bet != []:
+                innerArray = self.wheel[0][(bet[0][0])]
+                midArray = self.wheel[1][(bet[1][0])]
+                outArray = self.wheel[2][(bet[2][0])]
+            else:
+                break
+        result = [innerArray, midArray, outArray]
         return result
 
 class slots:
@@ -59,14 +66,16 @@ class payouts:
     
     def calculatePayouts(self):
         payouts = [0, 0, 0]
+
+        for index, result in enumerate(self.results):
+            # Calculate payout here
+            payouts[index] = 0
         
         return payouts
 
 
 class wheel(object):
-    def __init__(self, slots, bet):
-        self.slots = slots
-        self.bet = bet
+    def __init__(self):
         self.wheel = gameSettings.instantiateWheel.buildWholeWheel()
         self.wheelOffset = [0, 0, 0]
         # Debug variables
