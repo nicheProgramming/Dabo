@@ -81,9 +81,9 @@ class payouts:
         # resultMidAndOut = [shape, numOfShape, color]
         for index, result in enumerate(self.results):
             # If two shapes match
-            if result[0][0] == result[1][0] OR result[1][0] == result[2][0] OR result[0][0] = result[2][0]:
+            if result[0][0] == result[1][0] or result[1][0] == result[2][0] or result[0][0] == result[2][0]:
                 # if two counts match
-                if result[0][1] == result[1][1] OR result[1][1] == result[2][1] OR result[0][1] = result[2][1]:
+                if result[0][1] == result[1][1] or result[1][1] == result[2][1] or result[0][1] == result[2][1]:
                     payouts[index] = 0
 
                 #RESUME WORK HERE, YOU NEED TO EVALUATE LARGER MATCHES BEFORE SMALLER ONES
