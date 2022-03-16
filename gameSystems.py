@@ -6,8 +6,9 @@ maxBet = 1000000
 startingCreditCount = maxBet
 
 def placeBet(slotsBetOn):
-    # Store slot bet on, then amount bet on said slot
+    # Store [slot bet on, amount bet on slot] x 3 
     placedBets = [[], [], []]
+    index = 0
 
     while slotsBetOn > 0:
         print("Which slot would you like to bet on?")
@@ -22,8 +23,9 @@ def placeBet(slotsBetOn):
         elif bet > maxBet:
             print ("bet too large, try agian.")
         else:
-            placedBets[slotsBetOn-1] = [slot, bet]
+            placedBets[index] = [slot, bet]
 
+        index += 1
         slotsBetOn -= 1 
     return placedBets
 
@@ -39,18 +41,25 @@ class result(object):
     def __init__(self, wheel, bets):
         # array of all three wheel positions AFTER spin
         self.wheel = wheel
-        # array of three sets of [slot, bet]
+        # 3 x 2 array of [slot, bet], 0 being inner wheel. We only care about slot
         self.bets = bets
 
     def resultList(self):
+        # result must store a 3 x 3 array containing ALL THREE results per slot
+        result = [0, 0, 0]
+
+        # for [slot, bet] in self.bets
+        # thus, bet = [slot, bet]
         for index, bet in enumerate(self.bets):
             if bet != []:
-                innerArray = self.wheel[0][(bet[0][0])]
-                midArray = self.wheel[1][(bet[1][0])]
-                outArray = self.wheel[2][(bet[2][0])]
+                # set result at index to [inSym, midSym, outSym]
+                result[index][0] = self.wheel[0][(bet[0])]
+                result[index][1] = self.wheel[1][(bet[0])]
+                result[index][2] = self.wheel[2][(bet[0])]
             else:
-                break
-        result = [innerArray, midArray, outArray]
+                # if bet is empty, return empty results
+                result[index] = []
+
         return result
 
 class slots:
@@ -67,10 +76,17 @@ class payouts:
     def calculatePayouts(self):
         payouts = [0, 0, 0]
 
+        # result iterations through results (each loop assesses a single ring's result array)
+        # resultInArray = [shape, numOfShape]
+        # resultMidAndOut = [shape, numOfShape, color]
         for index, result in enumerate(self.results):
-            # Calculate payout here
-            payouts[index] = 0
-        
+            # If two shapes match
+            if result[0][0] == result[1][0] OR result[1][0] == result[2][0] OR result[0][0] = result[2][0]:
+                # if two counts match
+                if result[0][1] == result[1][1] OR result[1][1] == result[2][1] OR result[0][1] = result[2][1]:
+                    payouts[index] = 0
+
+                #RESUME WORK HERE, YOU NEED TO EVALUATE LARGER MATCHES BEFORE SMALLER ONES
         return payouts
 
 
