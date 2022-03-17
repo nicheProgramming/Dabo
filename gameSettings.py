@@ -10,7 +10,7 @@ symbolShapes = ["square",
 class instantiateWheel:
     def buildOneWheel(self, position):
         # The inner wheel doesn't need to account for color, the others do
-        if self.position == 0:
+        if position == 0:
             # Store shape, then number of shapes
             self.wheel = [["square", 3],
                           ["swirl", 1],
@@ -50,7 +50,7 @@ class instantiateWheel:
                           ["circle", 2]
             ]
         # Store shape, number of shapes, then color
-        elif self.position == 1:
+        elif position == 1:
             self.wheel = [["triangle", 1, "red"],
                           ["circle", 3, "blue"],
                           ["quark", 1, None],
@@ -88,7 +88,7 @@ class instantiateWheel:
                           ["blackHole", 1, None],
                           ["circle", 2, "green"]
             ]
-        elif self.position == 2:
+        elif position == 2:
             # Store shape, number of shapes, then color
             self.wheel = [["blackHole", 1, None],
                           ["circle", 2, "green"],
@@ -130,7 +130,7 @@ class instantiateWheel:
         return self.wheel
     
     def buildWholeWheel(self):
-        result = None * 3
+        result = [[], [], []]
 
         result[0] = self.buildOneWheel(0)
         result[1] = self.buildOneWheel(1)

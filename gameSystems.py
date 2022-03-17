@@ -3,26 +3,32 @@ import gameSettings
 
 minBet = 100
 maxBet = 1000000
-startingCreditCount = maxBet
 
-def placeBet(slotsBetOn):
+class player(object):
+    def __init__(self):
+        self.creditCount = maxBet
+
+def placeBet(slotsBetOn, player):
     # Store [slot bet on, amount bet on slot] x 3 
     placedBets = [[], [], []]
     index = 0
 
-    while slotsBetOn > 0:
+    while int(slotsBetOn) > 0 and player.creditCount > 0:
         print("Which slot would you like to bet on?")
         slot = input()
 
+        # Check here if slot is in valid range
+
         print("How much would you like to bet on slot " + str(slot) + "?")
         bet = input()
-
+        
         # Make sure bet is in acceptable range
         if bet < minBet:
             print ("Bet too small, try again.")
         elif bet > maxBet:
             print ("bet too large, try agian.")
         else:
+            player.creditCount -= bet
             placedBets[index] = [slot, bet]
 
         index += 1
@@ -183,10 +189,11 @@ class payouts:
 
 class wheel(object):
     def __init__(self):
-        self.wheel = gameSettings.instantiateWheel.buildWholeWheel()
+        self.buildWheel = gameSettings.instantiateWheel()
+        self.wheel = self.buildWheel.buildWholeWheel()
         self.wheelOffset = [0, 0, 0]
         # Debug variables
-        self.referenceWheel = gameSettings.instantiateWheel.buildWholeWheel()
+        self.referenceWheel = self.buildWheel.buildWholeWheel()
     
     def spinWheel(self):
         self.wheelOffset = [random.randRange(0, 35), random.randRange(0, 35), random.randRange(0, 35)]
