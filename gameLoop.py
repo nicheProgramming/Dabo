@@ -4,8 +4,11 @@ def mainGameLoop():
     gamePlaying = True
     # Instantiate player object to track winnings, etc
     player = gameSystems.player()
+    # instantiate wheels
+    wheel = gameSystems.wheel()
 
     while gamePlaying:
+        print("You have " + str(("{:,}".format(player.creditCount))) + " credits.")
         print("How many slots would you like to bet on? Type 0 to quit.")
         userInput = input()
 
@@ -16,10 +19,8 @@ def mainGameLoop():
         else:
             # store the number of slots bet on from user input
             slotsBetOn = userInput
-            # instantiate wheels, later we need to ensure this only happens once per game load
-            wheel = gameSystems.wheel()
             # take bets from user's wallet, return in 3x2 array of [slot, bet]
-            bets = gameSystems.placeBet(slotsBetOn, player)
+            bets = gameSystems.placeBet(slotsBetOn, player, wheel)
             # spin the wheel
             wheel = wheel.spinWheel()
             # take wheel after spin and bets to get results on the slot user bet on

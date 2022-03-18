@@ -1,31 +1,45 @@
 import random
 import gameSettings
 
-minBet = 100
-maxBet = 1000000
-
 class player(object):
     def __init__(self):
-        self.creditCount = maxBet
+        self.creditCount = gameSettings.maxBet
 
-def placeBet(slotsBetOn, player):
+def placeBet(slotsBetOn, player, wheel):
     # Store [slot bet on, amount bet on slot] x 3 
-    placedBets = [[], [], []]
+    placedBets = [[-1,-1], [-1,-1], [-1,-1]]
     index = 0
+    slotsBetOn = int(slotsBetOn)
 
-    while int(slotsBetOn) > 0 and player.creditCount > 0:
+    while slotsBetOn > 0 and player.creditCount > 0:
         print("Which slot would you like to bet on?")
         slot = input()
 
         # Check here if slot is in valid range
+        if int(slot) not in gameSettings.bettableSlots:
+            print(str(slot) + " is not a valid slot to bet on, please bet on a valid slot.")
+            print("Valid slots are: "  + str(gameSettings.bettableSlots))
+            continue
+
+        # Check here if slot has already been bet on
+        evalIndex = index
+        while evalIndex >= 0:
+            if placedBets[evalIndex][0] != -1:
+                if placedBets[evalIndex][0] == int(slot):
+                    print("Slot " + str(slot) + " is already bet on, please choose another.")
+                    continue
+                else:
+                    evalIndex -= 1
+            else:
+                evalIndex -= 1
 
         print("How much would you like to bet on slot " + str(slot) + "?")
-        bet = input()
+        bet = int(input())
         
         # Make sure bet is in acceptable range
-        if bet < minBet:
+        if bet < gameSettings.minBet:
             print ("Bet too small, try again.")
-        elif bet > maxBet:
+        elif bet > gameSettings.maxBet:
             print ("bet too large, try agian.")
         else:
             player.creditCount -= bet
@@ -196,9 +210,9 @@ class wheel(object):
         self.referenceWheel = self.buildWheel.buildWholeWheel()
     
     def spinWheel(self):
-        self.wheelOffset = [random.randRange(0, 35), random.randRange(0, 35), random.randRange(0, 35)]
+        self.wheelOffset = [random.randrange(0, 35), random.randrange(0, 35), random.randrange(0, 35)]
 
-        for index, spin in enumerate(self.wheelOffset[0]):
+        for index, spin in enumerate(self.wheelOffset):
             self.wheel[0] = self.wheel[0][1:] + self.wheel[0][0]
             print("First item in self.wheel[2] is " + str(self.wheel[0][0]))
             # Print the expected wheel item to ensure array is moving as anticipated
