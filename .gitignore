@@ -1,3 +1,1 @@
-__pycache__/gameLoop.cpython-310.pyc
-__pycache__/gameSettings.cpython-310.pyc
-__pycache__/gameSystems.cpython-310.pyc
+*.pyc

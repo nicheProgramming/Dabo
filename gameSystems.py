@@ -47,6 +47,7 @@ def placeBet(slotsBetOn, player, wheel):
 
         index += 1
         slotsBetOn -= 1 
+    # returns 3x2 array of [slot, bet]
     return placedBets
 
 class gameSymbol(object):
@@ -66,7 +67,7 @@ class result(object):
 
     def resultList(self):
         # result must store a 3 x 3 array containing ALL THREE results per slot
-        result = [0, 0, 0]
+        result = [["", "", ""], ["", "", ""], ["", "", ""]]
 
         # for [slot, bet] in self.bets
         # thus, bet = [slot, bet]
@@ -80,6 +81,7 @@ class result(object):
                 # if bet is empty, return empty results
                 result[index] = []
 
+        # Returns 3x3 array with results of symbol results on each bet slot
         return result
 
 class slots:
@@ -203,32 +205,197 @@ class payouts:
 
 class wheel(object):
     def __init__(self):
-        self.buildWheel = gameSettings.instantiateWheel()
-        self.wheel = self.buildWheel.buildWholeWheel()
+        self.wheel = self.buildWholeWheel()
         self.wheelOffset = [0, 0, 0]
         # Debug variables
-        self.referenceWheel = self.buildWheel.buildWholeWheel()
+        self.referenceWheel = self.buildWholeWheel()
+        self.spunWheel = []
+
+    def buildOneWheel(self, position):
+        # The inner wheel doesn't need to account for color, the others do
+        if position == 0:
+            # Store shape, then number of shapes
+            wheel = [["square", 3],
+                            ["swirl", 1],
+                            ["circle", 1],
+                            ["triangle", 3],
+                            ["circle", 1],  
+                            ["triangle", 1],
+                            ["square", 2],
+                            ["ds9", 1],
+                            ["square", 1],
+                            ["square", 3],
+                            ["circle", 3],
+                            ["square", 2],
+                            ["blackHole", 1],
+                            ["circle", 1],
+                            ["square", 3],
+                            ["triangle", 2],
+                            ["triangle", 1],
+                            ["blackHole", 1],
+                            ["circle", 3],
+                            ["square", 1],
+                            ["ds9", 1],
+                            ["triangle", 2],
+                            ["blackHole", 1],
+                            ["circle", 2],
+                            ["triangle", 1],
+                            ["circle", 3],
+                            ["quark", 1],
+                            ["triangle", 3],
+                            ["circle", 2],
+                            ["triangle", 2],
+                            ["square", 1],
+                            ["ds9", 1],
+                            ["triangle", 3],
+                            ["square", 2],
+                            ["blackHole", 1],
+                            ["circle", 2]
+            ]
+        # Store shape, number of shapes, then color
+        elif position == 1:
+            wheel = [["triangle", 1, "red"],
+                            ["circle", 3, "blue"],
+                            ["quark", 1, None],
+                            ["triangle", 3, "green"],
+                            ["circle", 2, "red"],
+                            ["triangle", 2, "green"],
+                            ["square", 1, "blue"],
+                            ["ds9", 1, None],
+                            ["triangle", 3, "red"],
+                            ["green", 2, "green"],
+                            ["blackHole", 1, None],
+                            ["circle", 2, "blue"],
+                            ["square", 3, "red"],
+                            ["swirl", 1, None],
+                            ["circle", 1, "green"],
+                            ["triangle", 3, "blue"],
+                            ["circle", 1, "red"],
+                            ["triangle", 1, "green"],
+                            ["square", 2, "blue"],
+                            ["ds9", 1, None],
+                            ["square", 1, "red"],
+                            ["square", 3, "blue"],
+                            ["circle", 3, "green"],
+                            ["square", 2, "red"],
+                            ["blackHole", 1, None],
+                            ["circle", 1, "blue"],
+                            ["square", 3, "green"],
+                            ["triangle", 2, "red"],
+                            ["triangle", 1, "blue"],
+                            ["swirl", 1, None],
+                            ["circle", 3, "red"],
+                            ["square", 1, "green"],
+                            ["ds9", 1, None],
+                            ["triangle", 2, "blue"],
+                            ["blackHole", 1, None],
+                            ["circle", 2, "green"]
+            ]
+        elif position == 2:
+            # Store shape, number of shapes, then color
+            wheel = [["blackHole", 1, None],
+                            ["circle", 2, "green"],
+                            ["triangle", 1, "red"],
+                            ["circle", 3, "blue"],
+                            ["quark", 1, None],
+                            ["triangle", 3, "green"],
+                            ["circle", 2, "red"],
+                            ["triangle", 2, "green"],
+                            ["square", 1, "blue"],
+                            ["ds9", 1, None],
+                            ["triangle", 3, "red"],
+                            ["square", 2, "green"],
+                            ["blackHole", 1, None],
+                            ["circle", 2, "blue"],
+                            ["square", 3, "red"],
+                            ["swirl", 1, None],
+                            ["circle", 1, "green"],
+                            ["triangle", 3, "blue"],
+                            ["circle", 1, "red"],
+                            ["triangle", 1, "green"],
+                            ["square", 2, "blue"],
+                            ["ds9", 1, None],
+                            ["square", 1, "red"],
+                            ["square", 3, "blue"],
+                            ["circle", 3, "green"],
+                            ["square", 2, "red"],
+                            ["blackHole", 1, None],
+                            ["circle", 1, "blue"],
+                            ["square", 3, "green"],
+                            ["triangle", 2, "red"],
+                            ["triangle", 1, "blue"],
+                            ["swirl", 1, None],
+                            ["circle", 3, "red"],
+                            ["square", 1, "green"],
+                            ["ds9", 1, None],
+                            ["triangle", 2, "blue"]
+            ]
+        return wheel
+    
+    def buildWholeWheel(self):
+        result = [[], [], []]
+
+        result[0] = self.buildOneWheel(0)
+        result[1] = self.buildOneWheel(1)
+        result[2] = self.buildOneWheel(2)
+
+        return result
     
     def spinWheel(self):
         self.wheelOffset = [random.randrange(0, 35), random.randrange(0, 35), random.randrange(0, 35)]
+        index = 0
 
-        for index, spin in enumerate(self.wheelOffset):
-            self.wheel[0] = self.wheel[0][1:] + self.wheel[0][0]
-            print("First item in self.wheel[2] is " + str(self.wheel[0][0]))
-            # Print the expected wheel item to ensure array is moving as anticipated
-            print ("expected: " + self.referenceWheel[0][(-1-index)])
+        while self.wheelOffset[0] > 0:
+            # Put first item in array at the end of the array
+            self.wheel[0] = self.wheel[0][1:] + [self.wheel[0][0]]
+            self.wheelOffset[0] -= 1
+            
+            # make sure last item in wheel matches item in reference wheel at offset iteration index (index of how many times offset has been applied)
+            if self.wheel[0][-1] != self.referenceWheel[0][index]:
+                print("!!!wheel not spinning properly!!!")
+                print("Last item in self.wheel[0] is " + str(self.wheel[0][-1]))
+                print ("expected: " + str(self.referenceWheel[0][(index)]))
+                exit()
+                
+            index += 1
 
-        for index, spin in enumerate(self.wheelOffset[1]):
-            # This is reversed on purpose, this wheel spings counter clockwise unlike the other two 
-            self.wheel[0] = self.wheel[1][-1] + self.wheel[2][:-1]
-            print("First item in self.wheel[1] is " + str(self.wheel[1][0]))
-            # Print the expected wheel item to ensure array is moving as anticipated
-            print ("expected: " + self.referenceWheel[1][(0+index)])
+        # must be reset after each wheel spin
+        index = 0
 
-        for index, spin in enumerate(self.wheelOffset[2]):
-            self.wheel[0] = self.wheel[2][1:] + self.wheel[2][0]
-            print("First item in self.wheel[2] is " + str(self.wheel[2][0]))
-            # Print the expected wheel item to ensure array is moving as anticipated
-            print ("expected: " + self.referenceWheel[2][(-1-index)])
+        while self.wheelOffset[1] > 0:
+            # Put last item of array in first place
+            # This is reversed on purpose, this wheel spins counter clockwise, unlike the other two wheels 
+            self.wheel[1] = [self.wheel[1][-1]] + self.wheel[1][:-1]
+            self.wheelOffset[1] -= 1
+
+            # make sure first item in wheel matches item in reference wheel at reverse offset iteration index (index of how many times offset has been applied)
+            if self.wheel[1][0] != self.referenceWheel[1][-index-1]:
+                print("!!!wheel not spinning properly!!!")
+                print("First item in self.wheel[1] is " + str(self.wheel[1][0]))
+                print ("expected: " + str(self.referenceWheel[1][-index-1]))
+                exit()
+
+            index += 1
+
+            # print("First item in self.wheel[1] is " + str(self.wheel[1][0]))
+            # # Print the expected wheel item to ensure array is moving as anticipated
+            # print ("expected: " + self.referenceWheel[1][(0+index)])
+
+        # must be reset after each wheel spin
+        index = 0
+
+        while self.wheelOffset[2] > 0:
+            # Put first item in array at the end of the array
+            self.wheel[2] = self.wheel[2][1:] + [self.wheel[2][0]]
+            self.wheelOffset[2] -= 1
+            
+            # make sure last item in wheel matches item in reference wheel at offset iteration index (index of how many times offset has been applied)
+            if self.wheel[2][-1] != self.referenceWheel[2][index]:
+                print("!!!wheel not spinning properly!!!")
+                print("Last item in self.wheel[2] is " + str(self.wheel[2][-1]))
+                print ("expected: " + str(self.referenceWheel[2][(index)]))
+                exit()
+                
+            index += 1
 
         return self.wheel
