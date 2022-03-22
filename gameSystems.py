@@ -5,7 +5,7 @@ class player(object):
     def __init__(self):
         self.creditCount = gameSettings.maxBet
 
-def placeBet(slotsBetOn, player, wheel):
+def placeBet(slotsBetOn, player):
     # Store [slot bet on, amount bet on slot] x 3 
     placedBets = [[-1,-1], [-1,-1], [-1,-1]]
     index = 0
@@ -199,17 +199,16 @@ class payouts:
                     payouts[index] = self.bets[index][1] * .2
             else:
                 # No winning combo found, no payout. Move on
-                    continue
+                payouts[index] = 0
+                continue
         return payouts
-
 
 class wheel(object):
     def __init__(self):
         self.wheel = self.buildWholeWheel()
         self.wheelOffset = [0, 0, 0]
         # Debug variables
-        self.referenceWheel = self.buildWholeWheel()
-        self.spunWheel = []
+        self.referenceWheel = [[], [], []]
 
     def buildOneWheel(self, position):
         # The inner wheel doesn't need to account for color, the others do
@@ -354,8 +353,10 @@ class wheel(object):
             if self.wheel[0][-1] != self.referenceWheel[0][index]:
                 print("!!!wheel not spinning properly!!!")
                 print("Last item in self.wheel[0] is " + str(self.wheel[0][-1]))
-                print ("expected: " + str(self.referenceWheel[0][(index)]))
+                print ("expected: " + str(self.referenceWheel[0][index]))
                 exit()
+            else:
+                print("evaluation success")
                 
             index += 1
 
@@ -397,5 +398,5 @@ class wheel(object):
                 exit()
                 
             index += 1
-
+        
         return self.wheel

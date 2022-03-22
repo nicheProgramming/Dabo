@@ -1,11 +1,7 @@
 import gameSystems
 
-def mainGameLoop():
+def mainGameLoop(player, wheel):
     gamePlaying = True
-    # Instantiate player object to track winnings, etc
-    player = gameSystems.player()
-    # instantiate wheels
-    wheel = gameSystems.wheel()
 
     while gamePlaying:
         # Debug mode check to pass args automatically instead of manually for testing
@@ -14,6 +10,7 @@ def mainGameLoop():
             print("How many slots would you like to bet on? Type 0 to quit.")
             userInput = input()
         else:
+            print("You have " + str(("{:,}".format(player.creditCount))) + " credits.")
             userInput = 3
 
         if userInput == 0:
@@ -27,14 +24,18 @@ def mainGameLoop():
             # Debug mode check to pass bets automatically for testing
             if not gameSystems.gameSettings.Debug:
                 # take bets from user's wallet, return in 3x2 array of [slot, bet]
-                bets = gameSystems.placeBet(slotsBetOn, player, wheel)
+                bets = gameSystems.placeBet(slotsBetOn, player)
             else:
                 bets = [[0, 50000], [1, 50000], [2, 50000]]
             
-            wheel.spunWheel = wheel.spinWheel()
+            # Set reference wheel to match spinned wheel so future spins can be properly checked against
+            wheel.wheel = wheel.spinWheel()
+
+            # Set ref wheel to VALUE, no OBJECT of wheel after spin for continuitiy
+            wheel.referenceWheel = list(wheel.wheel)
 
             # take wheel after spin and bets to get results on the slot user bet on
-            result = gameSystems.result(wheel.spunWheel, bets)
+            result = gameSystems.result(wheel.wheel, bets)
             # calculate results, returns [inSym, midSym, outSym] x3
             resultArray = result.resultList()
 
@@ -55,7 +56,10 @@ def mainGameLoop():
 
             if player.creditCount > 0:
                 print("Type 1 to play again, 0 to quit")
-                userInput = input()
+                if not gameSystems.gameSettings.Debug:
+                    userInput = input()
+                else:
+                    userInput = 1
 
                 if userInput == 1:
                     continue
