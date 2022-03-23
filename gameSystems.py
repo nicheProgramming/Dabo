@@ -50,14 +50,6 @@ def placeBet(slotsBetOn, player):
     # returns 3x2 array of [slot, bet]
     return placedBets
 
-class gameSymbol(object):
-    def __init__(self, shape, num, color = None):
-        self.shape = shape
-        self.num = num
-        self.color = color
-        # position = 0
-        # wheel = 0
-
 class result(object):
     def __init__(self, wheel, bets):
         # array of all three wheel positions AFTER spin
@@ -103,14 +95,17 @@ class payouts:
             # If result is three swirls
             if result[0][0] == "swirl" and result[1][0] == "swirl" and result[2][0] == "swirl":
                 # This is a three swirl dabo with 100,000% payout
+                print("Swirl Dabo!")
                 payouts[index] = self.bets[index][1] * 1000
             # If result is three quarks
             elif result[0][0] == "quark" and result[1][0] == "quark" and result[2][0] == "quark":
                 # This is a three quark dabo with 200,000% payout
+                print ("Quark Dabo!")
                 payouts[index] = self.bets[index][1] * 2000
             # If result is three ds9
             elif result[0][0] == "ds9" and result[1][0] == "ds9" and result[2][0] == "ds9":
                 # This is a three ds9 dabo with 15,000% payout
+                print("Deep space nine Dabo!")
                 payouts[index] = self.bets[index][1] * 150
             # If three shapes match 
             elif result[0][0] == result[1][0] and result[1][0] == result[2][0]:
@@ -119,34 +114,42 @@ class payouts:
                     # If both colors match
                     if result[1][2] == result[2][2]:
                         # This is a 3x shape 3x count 2x color Dabo with 1000% payout
+                        print("Full match Dabo!")
                         payouts[index] = self.bets[index][1] * 10
                     else:
                         # This is a 3x shape 3x count three of a kind with 200% payout
+                        print("Three of a Kind!")
                         payouts[index] = self.bets[index][1] * 2
                 # If both colors match
                 elif result[1][2] == result[2][2]: 
                     # This is 3x shape 2x color three of a kind with 150% payout
+                    print("Three of a Kind!")
                     payouts[index] = self.bets[index][1] * 1.5
                 # if two counts match
                 elif result[0][1] == result[1][1] or result[1][1] == result[2][1] or result[0][1] == result[2][1]:
                     # If both colors match
                     if result[1][2] == result[2][2]:
                         # This is a 3x shape 2x count 2x color three of a kind with 150% payout
+                        print("Three of a Kind!")
                         payouts[index] = self.bets[index][1] * 1.5
                     else:
                         # This is a 3x shape 2x count three of a kind with 15 % payout
+                        print("Three of a Kind!")
                         payouts[index] = self.bets[index][1] * 1.5
                 else:
                     # This is a 3x shape three of a kind with 150% payout
+                    print("Three of a Kind!")
                     payouts[index] = self.bets[index][1] * 1.5
             # If three counts match
             elif result[0][1] == result[1][1] and result[1][1] == result[2][1]:
                 # if both colors match
                 if result[1][2] == result[2][2]: 
                     # This is a 3x count 2x color three of a kind with 200% payout
+                    print("Three of a Kind!")
                     payouts[index] = self.bets[index][1] * 2
                 else:
                     # This is a 3x count three of a kind with 200% payout
+                    print("Three of a Kind!")
                     payouts[index] = self.bets[index][1] * 2
             # If two shapes match
             elif result[0][0] == result[1][0] or result[1][0] == result[2][0] or result[0][0] == result[2][0]:
@@ -155,15 +158,18 @@ class payouts:
                     # if both colors match
                     if result[1][2] == result[2][2]: 
                         # This is 2x shape 3x count 2x color three of a kind with 200% payout
+                        print("Three of a Kind!")
                         payouts[index] = self.bets[index][1] * 2
                     else:
                         # this is a 2x shape 3x count three of a kind with 200% payout
+                        print("Three of a Kind!")
                         payouts[index] = self.bets[index][1] * 2
                 # if two counts match
                 elif result[0][1] == result[1][1] or result[1][1] == result[2][1] or result[0][1] == result[2][1]:
                     # if both colors match
                     if result[1][2] == result[2][2]: 
                         # This is 2x shape 2x count 2x color two of a kind with 20% payout
+                        print("Two of a Kind!")
                         payouts[index] = self.bets[index][1] * .2
                     else:
                         # This is a 2x shape 2x count two of a kind with 15% payout
@@ -171,35 +177,41 @@ class payouts:
                 # if both colors match
                 elif result[1][2] == result[2][2]: 
                     # This is a 2x shape 2x color two of a kind with 20% payout
+                    print("Two of a Kind!")
                     payouts[index] = self.bets[index][1] * .2
                 # if two shapes are quarks
                 elif (result[0][0] == "quark" and result[1][0] == "quark") or (result[1][0] == "quark" and result[2][0] == "quark") or (result[0][0] == "quark" and result[2][0] == "quark"):
                     # This is a 2x quark two of a kind with 500% payout
+                    print("Two of a Kind!")
                     payouts[index] = self.bets[index][1] * 5
                 # if two shapes are ds9
                 elif (result[0][0] == "ds9" and result[1][0] == "ds9") or (result[1][0] == "ds9" and result[2][0] == "ds9") or (result[0][0] == "ds9" and result[2][0] == "ds9"):
                     # This is a 2x ds9 two of a kind with 400% payout
+                    print("Two of a Kind!")
                     payouts[index] = self.bets[index][1] * 4
                 else:
                     # This is a 2x shape two of a kind with 10% payout
+                    print("Two of a Kind!")
                     payouts[index] = self.bets[index][1] * .1
             # if two count match
             elif result[0][1] == result[1][1] or result[1][1] == result[2][1] or result[0][1] == result[2][1]:
                 # if both colors match
                 if result[1][2] == result[2][2]: 
                     # This is a 2x count 2x color two of a kind with 20% payout
+                    print("Two of a Kind!")
                     payouts[index] = self.bets[index][1] * .2
                 else:
                     # This is a 2x count two of a kind with 15% payout
+                    print("Two of a Kind!")
                     payouts[index] = self.bets[index][1] * .15
-                #RESUME WORK HERE, YOU NEED TO EVALUATE LARGER MATCHES BEFORE SMALLER ONES
             # if both colors match
             elif result[1][2] == result[2][2]: 
                 # This is a 2x color two of a kind with 20% payout
-                    payouts[index] = self.bets[index][1] * .2
+                print("Two of a Kind!")
+                payouts[index] = self.bets[index][1] * .2
             else:
                 # No winning combo found, no payout. Move on
-                payouts[index] = 0
+                print("Sorry, no winning combo on this slot :(")
                 continue
         return payouts
 
@@ -208,7 +220,7 @@ class wheel(object):
         self.wheel = self.buildWholeWheel()
         self.wheelOffset = [0, 0, 0]
         # Debug variables
-        self.referenceWheel = [[], [], []]
+        self.referenceWheel = list(self.wheel)
 
     def buildOneWheel(self, position):
         # The inner wheel doesn't need to account for color, the others do
@@ -355,8 +367,6 @@ class wheel(object):
                 print("Last item in self.wheel[0] is " + str(self.wheel[0][-1]))
                 print ("expected: " + str(self.referenceWheel[0][index]))
                 exit()
-            else:
-                print("evaluation success")
                 
             index += 1
 
