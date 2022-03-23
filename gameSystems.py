@@ -3,17 +3,33 @@ import gameSettings
 
 class player(object):
     def __init__(self):
-        self.creditCount = gameSettings.maxBet
+        self.creditCount = 10000
 
 def placeBet(slotsBetOn, player):
     # Store [slot bet on, amount bet on slot] x 3 
     placedBets = [[-1,-1], [-1,-1], [-1,-1]]
     index = 0
     slotsBetOn = int(slotsBetOn)
+    debugBetSlots = [7, 19, 31]
+    if player.creditCount < gameSettings.maxBet:
+        if player.creditCount >= gameSettings.maxBet * 3:
+            debugBetAmount = gameSettings.maxBet
+        if player.creditCount / 3 >= gameSettings.minBet:
+            debugBetAmount = int(player.creditCount / 3)
+        elif player.creditCount / 2 >= gameSettings.minBet:
+            debugBetAmount = int(player.creditCount / 2)
+        else:
+            debugBetAmount = player.creditCount
+    else:
+        debugBetAmount = gameSettings.minBet
 
-    while slotsBetOn > 0 and player.creditCount > 0:
+    while slotsBetOn > 0 and player.creditCount > gameSettings.minBet:
         print("Which slot would you like to bet on?")
-        slot = input()
+
+        if gameSettings.Debug:
+            slot = debugBetSlots[index]
+        else:
+            slot = input()
 
         # Check here if slot is in valid range
         if int(slot) not in gameSettings.bettableSlots:
@@ -23,6 +39,7 @@ def placeBet(slotsBetOn, player):
 
         # Check here if slot has already been bet on
         evalIndex = index
+
         while evalIndex >= 0:
             if placedBets[evalIndex][0] != -1:
                 if placedBets[evalIndex][0] == int(slot):
@@ -34,15 +51,28 @@ def placeBet(slotsBetOn, player):
                 evalIndex -= 1
 
         print("How much would you like to bet on slot " + str(slot) + "?")
-        bet = int(input())
+        
+        if gameSettings.Debug:
+            bet = debugBetAmount
+        else:
+            bet = int(input())
         
         # Make sure bet is in acceptable range
         if bet < gameSettings.minBet:
-            print ("Bet too small, try again.")
+            print("Bet too small, try again.")
         elif bet > gameSettings.maxBet:
-            print ("bet too large, try agian.")
+            print("bet too large, try agian.")
+        elif player.creditCount < gameSettings.minBet:
+            print("You don't have enough credits to place any more bets")
+            break
+        elif bet > player.creditCount:
+            print("You don't have enough credits to place that bet, try agian.")
+        elif slot < 0:
+            break
         else:
+            print(str(bet) + " credits bet on slot " + str(slot))
             player.creditCount -= bet
+            print("Your wallet now has " + str(player.creditCount) + " credits.")
             placedBets[index] = [slot, bet]
 
         index += 1
@@ -64,14 +94,17 @@ class result(object):
         # for [slot, bet] in self.bets
         # thus, bet = [slot, bet]
         for index, bet in enumerate(self.bets):
-            if bet != []:
+            if bet[0] > -1:
                 # set result at index to [inSym, midSym, outSym]
                 result[index][0] = self.wheel[0][(bet[0])]
                 result[index][1] = self.wheel[1][(bet[0])]
                 result[index][2] = self.wheel[2][(bet[0])]
+                # Print result
+                print("Slot " + str(bet[0]) + " landed on " + str(result[index]))
             else:
                 # if bet is empty, return empty results
                 result[index] = []
+
 
         # Returns 3x3 array with results of symbol results on each bet slot
         return result
@@ -92,6 +125,10 @@ class payouts:
 
         # result iterates through results (each loop assesses a single ring's result array)
         for index, result in enumerate(self.results):
+
+            if self.results[index] == []:
+                continue
+
             # If result is three swirls
             if result[0][0] == "swirl" and result[1][0] == "swirl" and result[2][0] == "swirl":
                 # This is a three swirl dabo with 100,000% payout
@@ -173,6 +210,7 @@ class payouts:
                         payouts[index] = self.bets[index][1] * .2
                     else:
                         # This is a 2x shape 2x count two of a kind with 15% payout
+                        print("Two of a Kind!")
                         payouts[index] = self.bets[index][1] * .15
                 # if both colors match
                 elif result[1][2] == result[2][2]: 
@@ -213,6 +251,7 @@ class payouts:
                 # No winning combo found, no payout. Move on
                 print("Sorry, no winning combo on this slot :(")
                 continue
+            payouts[index] = int(payouts[index])
         return payouts
 
 class wheel(object):
@@ -409,4 +448,7 @@ class wheel(object):
                 
             index += 1
         
+        # Set ref wheel to VALUE, no OBJECT of wheel after spin for continuitiy
+        self.referenceWheel = list(self.wheel)
+
         return self.wheel
