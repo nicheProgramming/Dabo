@@ -100,7 +100,8 @@ class result(object):
                 result[index][1] = self.wheel[1][(bet[0])]
                 result[index][2] = self.wheel[2][(bet[0])]
                 # Print result
-                print("Slot " + str(bet[0]) + " landed on " + str(result[index]))
+                if not gameSettings.Debug:
+                    print("Slot " + str(bet[0]) + " landed on " + str(result[index]))
             else:
                 # if bet is empty, return empty results
                 result[index] = []
