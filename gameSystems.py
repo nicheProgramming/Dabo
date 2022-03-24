@@ -133,16 +133,19 @@ class payouts:
             if result[0][0] == "swirl" and result[1][0] == "swirl" and result[2][0] == "swirl":
                 # This is a three swirl dabo with 100,000% payout
                 print("Swirl Dabo!")
+                gameSettings.swirlDabos += 1
                 payouts[index] = self.bets[index][1] * 1000
             # If result is three quarks
             elif result[0][0] == "quark" and result[1][0] == "quark" and result[2][0] == "quark":
                 # This is a three quark dabo with 200,000% payout
                 print ("Quark Dabo!")
+                gameSettings.quarkDabos += 1
                 payouts[index] = self.bets[index][1] * 2000
             # If result is three ds9
             elif result[0][0] == "ds9" and result[1][0] == "ds9" and result[2][0] == "ds9":
                 # This is a three ds9 dabo with 15,000% payout
                 print("Deep space nine Dabo!")
+                gameSettings.ds9Dabos += 1
                 payouts[index] = self.bets[index][1] * 150
             # If three shapes match 
             elif result[0][0] == result[1][0] and result[1][0] == result[2][0]:
@@ -152,15 +155,18 @@ class payouts:
                     if result[1][2] == result[2][2]:
                         # This is a 3x shape 3x count 2x color Dabo with 1000% payout
                         print("Full match Dabo!")
+                        gameSettings._3shape3count2colorDabos += 1
                         payouts[index] = self.bets[index][1] * 10
                     else:
                         # This is a 3x shape 3x count three of a kind with 200% payout
                         print("Three of a Kind!")
+                        gameSettings._3shape3count3OAK += 1
                         payouts[index] = self.bets[index][1] * 2
                 # If both colors match
                 elif result[1][2] == result[2][2]: 
                     # This is 3x shape 2x color three of a kind with 150% payout
                     print("Three of a Kind!")
+                    gameSettings._3shape2color3OAK += 1
                     payouts[index] = self.bets[index][1] * 1.5
                 # if two counts match
                 elif result[0][1] == result[1][1] or result[1][1] == result[2][1] or result[0][1] == result[2][1]:
@@ -168,14 +174,17 @@ class payouts:
                     if result[1][2] == result[2][2]:
                         # This is a 3x shape 2x count 2x color three of a kind with 150% payout
                         print("Three of a Kind!")
+                        gameSettings._3shape2count2color3OAK += 1
                         payouts[index] = self.bets[index][1] * 1.5
                     else:
                         # This is a 3x shape 2x count three of a kind with 15 % payout
                         print("Three of a Kind!")
+                        gameSettings._3shape2count3OAK += 1
                         payouts[index] = self.bets[index][1] * 1.5
                 else:
                     # This is a 3x shape three of a kind with 150% payout
                     print("Three of a Kind!")
+                    gameSettings._3shape3OAK += 1
                     payouts[index] = self.bets[index][1] * 1.5
             # If three counts match
             elif result[0][1] == result[1][1] and result[1][1] == result[2][1]:
@@ -183,10 +192,12 @@ class payouts:
                 if result[1][2] == result[2][2]: 
                     # This is a 3x count 2x color three of a kind with 200% payout
                     print("Three of a Kind!")
+                    gameSettings._3count2color3OAK += 1
                     payouts[index] = self.bets[index][1] * 2
                 else:
                     # This is a 3x count three of a kind with 200% payout
                     print("Three of a Kind!")
+                    gameSettings._3count3OAK
                     payouts[index] = self.bets[index][1] * 2
             # If two shapes match
             elif result[0][0] == result[1][0] or result[1][0] == result[2][0] or result[0][0] == result[2][0]:
@@ -196,40 +207,48 @@ class payouts:
                     if result[1][2] == result[2][2]: 
                         # This is 2x shape 3x count 2x color three of a kind with 200% payout
                         print("Three of a Kind!")
+                        gameSettings._2shape3count2color3OAK += 1
                         payouts[index] = self.bets[index][1] * 2
                     else:
                         # this is a 2x shape 3x count three of a kind with 200% payout
                         print("Three of a Kind!")
+                        gameSettings._2shape3count3OAK += 1
                         payouts[index] = self.bets[index][1] * 2
                 # if two counts match
                 elif result[0][1] == result[1][1] or result[1][1] == result[2][1] or result[0][1] == result[2][1]:
                     # if both colors match
                     if result[1][2] == result[2][2]: 
                         # This is 2x shape 2x count 2x color two of a kind with 20% payout
+                        gameSettings._2shape2count2color2OAK += 1
                         print("Two of a Kind!")
                         payouts[index] = self.bets[index][1] * .2
                     else:
                         # This is a 2x shape 2x count two of a kind with 15% payout
                         print("Two of a Kind!")
+                        gameSettings._2shape2count2OAK += 1
                         payouts[index] = self.bets[index][1] * .15
                 # if both colors match
                 elif result[1][2] == result[2][2]: 
                     # This is a 2x shape 2x color two of a kind with 20% payout
                     print("Two of a Kind!")
+                    gameSettings._2shape2color2OAK += 1
                     payouts[index] = self.bets[index][1] * .2
                 # if two shapes are quarks
                 elif (result[0][0] == "quark" and result[1][0] == "quark") or (result[1][0] == "quark" and result[2][0] == "quark") or (result[0][0] == "quark" and result[2][0] == "quark"):
                     # This is a 2x quark two of a kind with 500% payout
                     print("Two of a Kind!")
+                    gameSettings._2quark2OAK += 1
                     payouts[index] = self.bets[index][1] * 5
                 # if two shapes are ds9
                 elif (result[0][0] == "ds9" and result[1][0] == "ds9") or (result[1][0] == "ds9" and result[2][0] == "ds9") or (result[0][0] == "ds9" and result[2][0] == "ds9"):
                     # This is a 2x ds9 two of a kind with 400% payout
                     print("Two of a Kind!")
+                    gameSettings._2ds92OAK += 1
                     payouts[index] = self.bets[index][1] * 4
                 else:
                     # This is a 2x shape two of a kind with 10% payout
                     print("Two of a Kind!")
+                    gameSettings._2shape2OAK += 1
                     payouts[index] = self.bets[index][1] * .1
             # if two count match
             elif result[0][1] == result[1][1] or result[1][1] == result[2][1] or result[0][1] == result[2][1]:
@@ -237,19 +256,23 @@ class payouts:
                 if result[1][2] == result[2][2]: 
                     # This is a 2x count 2x color two of a kind with 20% payout
                     print("Two of a Kind!")
+                    gameSettings._2count2color2OAK += 1
                     payouts[index] = self.bets[index][1] * .2
                 else:
                     # This is a 2x count two of a kind with 15% payout
                     print("Two of a Kind!")
+                    gameSettings._2count2OAK += 1
                     payouts[index] = self.bets[index][1] * .15
             # if both colors match
             elif result[1][2] == result[2][2]: 
                 # This is a 2x color two of a kind with 20% payout
                 print("Two of a Kind!")
+                gameSettings._2color2OAK += 1
                 payouts[index] = self.bets[index][1] * .2
             else:
                 # No winning combo found, no payout. Move on
                 print("Sorry, no winning combo on this slot :(")
+                gameSettings.noPayout += 1
                 continue
             payouts[index] = int(payouts[index])
         return payouts
@@ -450,5 +473,7 @@ class wheel(object):
         
         # Set ref wheel to VALUE, no OBJECT of wheel after spin for continuitiy
         self.referenceWheel = list(self.wheel)
+
+        gameSettings.numOfSpins += 1
 
         return self.wheel
