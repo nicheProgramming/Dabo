@@ -1,0 +1,16 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false,
+    "editor.formatOnType": false,
+    "pylint.importStrategy": "fromEnvironment",
+    "[python]": {
+        "editor.tabSize": 4
+    },
+    "pylint.args": [
+        "--rcfile=${workspaceFolder}/pylintrc"
+    ],
+    "python.experiments.enabled": false,
+}
