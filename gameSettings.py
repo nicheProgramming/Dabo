@@ -1,10 +1,35 @@
 Debug = True
 minBet = 100
 maxBet = 1000000
-bettableSlots = [0, 1, 2, 3, 7, 8, 9, 10, 11, 12, 13, 14, 15, 
-              19, 20, 21, 22, 23, 24, 25, 26, 27, 31, 32, 33, 34]
-numOfSpins = 0
-# below vars track the number of 
+bettableSlots = [
+    0,
+    1,
+    2,
+    3,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    31,
+    32,
+    33,
+    34,
+]
+# below vars track the number of
 swirlDabos = 0
 quarkDabos = 0
 ds9Dabos = 0

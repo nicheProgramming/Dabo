@@ -1,12 +1,15 @@
-import gameLoop
-import gameTests
+from gameLoop import mainGameLoop
+from gameSettings import Debug
+from gameSystems import Player, Wheel
 
 # Instantiate player object to track winnings, etc
-player = gameLoop.gameSystems.player()
+player = Player()
 # instantiate wheels
-wheel = gameLoop.gameSystems.wheel()
+wheel = Wheel()
 
-if gameLoop.gameSystems.gameSettings.Debug:
-    gameTests.testResults()
+if Debug:
+    from tests.gameTests import testResults
 
-gameLoop.mainGameLoop(player, wheel)
+    testResults()
+
+mainGameLoop(player, wheel)
