@@ -10,7 +10,7 @@
         "editor.tabSize": 4
     },
     "pylint.args": [
-        "--rcfile=${workspaceFolder}/pylintrc"
+        "--rcfile=${workspaceFolder}/.pylintrc"
     ],
     "python.experiments.enabled": false,
     "git.enableCommitSigning": true,
