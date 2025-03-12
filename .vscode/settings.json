@@ -13,4 +13,5 @@
         "--rcfile=${workspaceFolder}/pylintrc"
     ],
     "python.experiments.enabled": false,
+    "git.enableCommitSigning": true,
 }
