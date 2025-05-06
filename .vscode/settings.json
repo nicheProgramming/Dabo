@@ -1,17 +1,25 @@
 {
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": "explicit"
-    },
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": false,
-    "editor.formatOnType": false,
-    "pylint.importStrategy": "fromEnvironment",
-    "[python]": {
-        "editor.tabSize": 4
-    },
-    "pylint.args": [
-        "--rcfile=${workspaceFolder}/.pylintrc"
-    ],
-    "python.experiments.enabled": false,
-    "git.enableCommitSigning": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
+  "git.enableCommitSigning": true,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.printWidth": 100,
+    "prettier.bracketSameLine": true,
+    "prettier.bracketSpacing": false,
+    "prettier.singleAttributePerLine": false,
+    "prettier.tabWidth": 2,
+    "prettier.trailingComma": "es5",
+    "prettier.useTabs": false,
+  },
+  "pylint.args": ["--rcfile=${workspaceFolder}/.pylintrc"],
+  "pylint.importStrategy": "fromEnvironment",
+  "[python]": {
+    "editor.tabSize": 4
+  },
+  "python.experiments.enabled": false,
 }
