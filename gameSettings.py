@@ -1,4 +1,4 @@
-Debug = True
+Debug = False
 minBet = 100
 maxBet = 1000000
 bettableSlots = [

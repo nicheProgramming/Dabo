@@ -1,4 +1,5 @@
 import random
+from sys import exit as sys_exit
 
 from gameSettings import (
     Debug,
@@ -47,13 +48,16 @@ def placeBet(slotsBetOn: int, player: Player):
         else:
             slot = input()
 
+        slot = int(slot)
+
         # Check here if slot is in valid range
-        if int(slot) not in bettableSlots:
+        if slot not in bettableSlots:
             print(
                 str(slot)
                 + " is not a valid slot to bet on, please bet on a valid slot."
             )
             print("Valid slots are: " + str(bettableSlots))
+
             continue
 
         # Check here if slot has already been bet on
@@ -61,7 +65,7 @@ def placeBet(slotsBetOn: int, player: Player):
 
         while evalIndex >= 0:
             if placedBets[evalIndex][0] != -1:
-                if placedBets[evalIndex][0] == int(slot):
+                if placedBets[evalIndex][0] == slot:
                     print(
                         "Slot "
                         + str(slot)
@@ -482,7 +486,7 @@ class Wheel(object):
 
         return result
 
-    def spinWheel(self, player: Player):
+    def spin_wheel(self, player: Player):
         self.wheelOffset = [
             random.randrange(0, 35),
             random.randrange(0, 35),
@@ -500,7 +504,7 @@ class Wheel(object):
                 print("!!!wheel not spinning properly!!!")
                 print("Last item in self.wheel[0] is " + str(self.wheel[0][-1]))
                 print("expected: " + str(self.referenceWheel[0][index]))
-                exit()
+                sys_exit()
 
             index += 1
 
@@ -518,7 +522,7 @@ class Wheel(object):
                 print("!!!wheel not spinning properly!!!")
                 print("First item in self.wheel[1] is " + str(self.wheel[1][0]))
                 print("expected: " + str(self.referenceWheel[1][-index - 1]))
-                exit()
+                sys_exit()
 
             index += 1
 
@@ -539,7 +543,7 @@ class Wheel(object):
                 print("!!!wheel not spinning properly!!!")
                 print("Last item in self.wheel[2] is " + str(self.wheel[2][-1]))
                 print("expected: " + str(self.referenceWheel[2][(index)]))
-                exit()
+                sys_exit()
 
             index += 1
 

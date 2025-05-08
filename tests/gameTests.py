@@ -1,4 +1,5 @@
 import random
+from sys import exit as sys_exit
 
 from gameSettings import (
     _2color2OAK,
@@ -36,7 +37,7 @@ from gameSystems import Payouts, Player, Result, Wheel
 def testPayouts(player: Player, wheel: Wheel):
     slotsBetOn = 3
     bets = [[31, 100], [7, 100], [19, 100]]
-    wheel.wheel = wheel.spinWheel()
+    wheel.wheel = wheel.spin_wheel()
     result = result(wheel.wheel, bets)
     resultArray = result.resultList()
 
@@ -57,7 +58,7 @@ def testResults():
 
         # example bets = [[31, 100], [7, 100], [19, 100]]
         bets = [[slot1, bet], [slot2, bet], [slot3, bet]]
-        wheel.wheel = wheel.spinWheel(player)
+        wheel.wheel = wheel.spin_wheel(player)
         result = Result(wheel.wheel, bets)
         resultArray = result.resultList()
         payout = Payouts(bets, resultArray)
@@ -317,6 +318,6 @@ def testResults():
             + str(expectedNoPayout)
         )
 
-    exit()
+    sys_exit()
 
     return

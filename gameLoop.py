@@ -1,73 +1,71 @@
+from sys import exit as sys_exit
+
+from game_classes import Player, Wheel
 from gameSettings import Debug, minBet
-from gameSystems import Payouts, Player, Wheel, placeBet
+from gameSystems import Payouts, Result
 
 
-def mainGameLoop(player: Player, wheel: Wheel):
-    gamePlaying = True
+def mainGameLoop():
+    game_playing = True
+    # Instantiate player object to track winnings, etc
+    player = Player()
+    # instantiate wheels
+    wheel = Wheel()
 
-    while gamePlaying and player.creditCount > minBet:
+    while game_playing and player.credits_count > minBet:
         # Debug mode check to pass args automatically instead of manually for testing
         if not Debug:
-            print("You have " + str(("{:,}".format(player.creditCount))) + " credits.")
-            print("How many slots would you like to bet on? Type 0 to quit.")
-            userInput = input()
+            player.print_credits()
+
+            user_input: int = player.get_num_slots_bet_on()
         else:
-            print("You have " + str(("{:,}".format(player.creditCount))) + " credits.")
-            userInput = 3
+            player.print_credits()
 
-        if userInput == 0:
-            quit
-        elif int(userInput) > 3:
-            print("Too many slots bet on, try again")
-        else:
-            # store the number of slots bet on from user input
-            slotsBetOn = userInput
+            user_input = 3
 
-            # take bets from user's wallet, return in 3x2 array of [slot, bet]
-            bets = placeBet(slotsBetOn, player)
+        # take bets from user's wallet, return in 3x2 array of [slot, bet]
+        player.place_bet()
 
-            # Set reference wheel to match spinned wheel so future spins can be properly checked against
-            wheel.wheel = wheel.spinWheel()
+        # Set reference wheel to match spinned wheel so future spins can be properly checked against
+        wheel.wheel = wheel.spin_wheel(player)
 
-            # take wheel after spin and bets to get results on the slot user bet on
-            result = result(wheel.wheel, bets)
+        # take wheel after spin and bets to get results on the slot user bet on
+        result = Result(wheel.wheel, player.placed_bets)
 
-            # calculate results, returns [inSym, midSym, outSym] x3
-            resultArray = result.resultList()
+        # calculate results, returns [inSym, midSym, outSym] x3
+        result_array = result.resultList()
 
-            # calculate payout based on bets and result symbols
-            payout = Payouts(bets, resultArray)
+        # calculate payout based on bets and result symbols
+        payout = Payouts(bets, result_array)
 
-            # returns payouts as [credsIn, credsMid, credsOut]
-            winnings = payout.calculatePayouts()
+        # returns payouts as [credsIn, credsMid, credsOut]
+        winnings = payout.calculatePayouts()
 
-            # Place winnings in player's wallet
-            for index, winning in enumerate(winnings):
-                # Notify player here of any winning bets they had
-                winning = int(winning)
+        # Place winnings in player's wallet
+        for index, winning in enumerate(winnings):
+            # Notify player here of any winning bets they had
+            winning = int(winning)
 
-                if winning > 0:
-                    print(
-                        "slot "
-                        + str(bets[index][0])
-                        + " won "
-                        + str(winning)
-                        + " credits!"
-                    )
-                    player.creditCount += winning
+            if winning > 0:
+                print(
+                    "slot " + str(bets[index][0]) + " won " + str(winning) + " credits!"
+                )
+                player.credits_count += winning
 
-            if player.creditCount >= minBet:
-                print("Type 1 to play again, 0 to quit")
-                if not Debug:
-                    userInput = input()
-                else:
-                    userInput = 1
-
-                if userInput == 1:
-                    continue
-                elif userInput == 0:
-                    gamePlaying = False
+        if player.credits_count >= minBet:
+            print("Type 1 to play again, 0 to quit")
+            if not Debug:
+                user_input = input()
             else:
-                print("You don't have enough credits to keep playing, game over.")
-                exit()
-    exit
+                user_input = 1
+
+            if user_input == 1:
+                continue
+            if user_input == 0:
+                game_playing = False
+        else:
+            print("You don't have enough credits to keep playing, game over.")
+
+            sys_exit()
+
+    sys_exit()
